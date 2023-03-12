@@ -16,7 +16,15 @@ namespace US_Buku_Faza_Intan
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            resetIncrement();
             filldataTable();
+        }
+        
+        public void resetIncrement()
+        {
+            MySqlScript script = new MySqlScript(koneksi, "SET @id := 0; UPDATE bukubuk SET id = @id := (@id+1); " +
+                "ALTER TABLE bukubuk AUTO_INCREMENT = 1;");
+            script.Execute();
         }
 
         public DataTable getDataBuku()
@@ -89,6 +97,7 @@ namespace US_Buku_Faza_Intan
                 cmd.Parameters.AddWithValue("@Judul_Buku", Judul_Buku.Text);
                 cmd.Parameters.AddWithValue("@Jenis_Buku", Jenis_Buku.Text);
                 cmd.Parameters.AddWithValue("@stok", Stok.Text);
+                resetIncrement();
                 cmd.ExecuteNonQuery();
 
                 MessageBox.Show("Data Berhasil Ditambah");
@@ -144,6 +153,7 @@ namespace US_Buku_Faza_Intan
 
                     databuku.Columns.Clear();
                     dataTable.Clear();
+                    resetIncrement();
                     filldataTable();
                 }
 
